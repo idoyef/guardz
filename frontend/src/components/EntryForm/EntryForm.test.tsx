@@ -1,9 +1,7 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { EntryForm } from './EntryForm';
-import { CreateEntryDto } from '../../types/entry.types';
 
 describe('EntryForm', () => {
   const mockOnSubmit = vi.fn();
