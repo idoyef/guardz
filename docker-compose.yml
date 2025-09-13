@@ -1,0 +1,75 @@
+services:
+  database:
+    image: postgres:15-alpine
+    container_name: user-entries-db
+    restart: unless-stopped
+    env_file:
+      - ./env/db.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    expose:
+      - '5432'
+    networks:
+      - app-network
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB" || exit 1',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: user-entries-backend
+    restart: unless-stopped
+    env_file:
+      - ./env/backend.env
+    expose:
+      - '8080'
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - app-network
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -fsS http://localhost:8080/health || exit 1']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - ./backend/logs:/app/logs
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: user-entries-frontend
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - app-network
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -fsS http://localhost/health || exit 1']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  app-network:
+    driver: bridge
+    name: user-entries-network
+
+volumes:
+  postgres_data:
+    driver: local
+    name: user-entries-postgres-data
