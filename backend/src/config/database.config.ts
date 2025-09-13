@@ -17,8 +17,9 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
       password: this.configService.get('DB_PASSWORD', 'password'),
       database: this.configService.get('DB_DATABASE', 'user_entries'),
       entities: [Entry, CustomField],
-      synchronize: this.configService.get('NODE_ENV') === 'development',
-      logging: this.configService.get('NODE_ENV') === 'development',
+      autoLoadEntities: true,
+      synchronize: true,
+      logging: true,
     };
   }
 }
