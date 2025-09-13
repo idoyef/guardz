@@ -4,9 +4,9 @@ services:
     container_name: user-entries-db-dev
     restart: unless-stopped
     environment:
-      POSTGRES_DB: user_entries
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      DB_DATABASE: user_entries
+      DB_USERNAME: postgres
+      DB_PASSWORD: password
     volumes:
       - postgres_data_dev:/var/lib/postgresql/data
     ports:
