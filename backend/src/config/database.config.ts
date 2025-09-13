@@ -18,7 +18,7 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
       database: this.configService.get('DB_DATABASE', 'user_entries'),
       entities: [Entry, CustomField],
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
       logging: true,
     };
   }
