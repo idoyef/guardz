@@ -103,11 +103,9 @@ describe('EntryForm', () => {
     const nameInput = screen.getByLabelText(/name \*/i);
     const submitButton = screen.getByRole('button', { name: /submit entry/i });
 
-    // Trigger validation error
     await user.click(submitButton);
     expect(screen.getByText(/name is required/i)).toBeInTheDocument();
 
-    // Start typing to clear error
     await user.type(nameInput, 'J');
     expect(screen.queryByText(/name is required/i)).not.toBeInTheDocument();
   });

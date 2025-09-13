@@ -39,7 +39,6 @@ export const EntryForm: React.FC<EntryFormProps> = ({
       [name]: value,
     }));
 
-    // Clear error for this field when user starts typing
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({
         ...prev,
@@ -60,7 +59,6 @@ export const EntryForm: React.FC<EntryFormProps> = ({
       ),
     }));
 
-    // Clear error for this custom field when user starts typing
     if (errors.customFields?.[index]) {
       setErrors((prev) => ({
         ...prev,
@@ -95,7 +93,6 @@ export const EntryForm: React.FC<EntryFormProps> = ({
       customFields: prev.customFields.filter((_, i) => i !== index),
     }));
 
-    // Clear errors for this field
     if (errors.customFields?.[index]) {
       setErrors((prev) => {
         const newCustomFieldErrors = { ...prev.customFields };
